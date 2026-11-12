@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ru" class="lang-ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>En frases · beta</title>
+<meta name="description" content="En frases — испанские глаголы во фразах. Тестовая версия для Android. / Spanish verbs in sentences. Android test build.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1B3AA8">
+<link rel="icon" type="image/png" href="icon-512.png">
+<link rel="apple-touch-icon" href="icon-512.png">
+<style>
+@font-face { font-family: Onest; src: url(fonts/Onest-Regular.ttf) format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: Onest; src: url(fonts/Onest-SemiBold.ttf) format("truetype"); font-weight: 600; font-display: swap; }
+@font-face { font-family: Onest; src: url(fonts/Onest-ExtraBold.ttf) format("truetype"); font-weight: 800; font-display: swap; }
+
+/* Tokens of the app (PLAN.md 15.2 / 15.3). */
+:root {
+  --brand: #1B3AA8; --brand-shade: #122877; --highlight: #FBE3A6;
+  --ground: #F3F5FC; --surface: #FFFFFF; --ink: #1A1F36; --muted: #55607A;
+  --line: #E4E9FA; --shade: #C6D0EE; --note: #FFF6DD; --tint: #E4E9FA;
+  --button: #1B3AA8; --button-shade: #122877; --on-button: #FFFFFF;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ground: #14171F; --surface: #1D212C; --ink: #D5D9E3; --muted: #9299AB;
+    --line: #2A2F3D; --shade: #0E1016; --note: #26241C; --tint: #2A2F3D;
+    --button: #5C69A3; --button-shade: #414C7C; --on-button: #EEF0F6;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--ground); color: var(--ink);
+  font: 400 16px/1.5 Onest, system-ui, sans-serif;
+}
+.lang-ru [lang="en"], .lang-en [lang="ru"] { display: none !important; }
+
+.hero {
+  background: var(--brand); color: #fff; text-align: center;
+  padding: max(28px, env(safe-area-inset-top)) 16px 36px;
+}
+.switch { display: flex; justify-content: flex-end; gap: 6px; max-width: 560px; margin: 0 auto; }
+.switch button {
+  min-width: 48px; min-height: 40px; border: 0; border-radius: 20px; cursor: pointer;
+  background: rgba(255,255,255,.14); color: #fff; font: 600 14px Onest, sans-serif;
+}
+.switch button[aria-pressed="true"] { background: #fff; color: var(--brand); }
+.logo { width: 132px; height: 132px; display: block; margin: 12px auto 4px; }
+h1 { margin: 0; font-size: 40px; font-weight: 800; letter-spacing: -.01em; }
+.tag { margin: 6px auto 0; max-width: 420px; font-size: 18px; opacity: .92; }
+.badge {
+  display: inline-block; margin-top: 14px; padding: 6px 12px; border-radius: 12px;
+  background: var(--highlight); color: #5C4200; font-size: 13px; font-weight: 600;
+}
+
+main { max-width: 560px; margin: 0 auto; padding: 0 16px 48px; }
+.card {
+  background: var(--surface); border-radius: 22px; padding: 20px;
+  box-shadow: 0 5px 0 var(--shade); margin: 20px 0 24px;
+}
+.download { margin-top: -28px; }
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 56px; padding: 12px 20px; border-radius: 28px; text-decoration: none;
+  background: var(--button); color: var(--on-button); font-size: 17px; font-weight: 800;
+  box-shadow: 0 5px 0 var(--button-shade); margin-bottom: 5px;
+}
+.btn:active { transform: translateY(5px); box-shadow: none; }
+.btn small { font-weight: 600; opacity: .85; }
+.alt { display: block; text-align: center; margin-top: 14px; color: var(--muted); font-size: 14px; }
+.alt a { color: inherit; font-weight: 600; }
+h2 { font-size: 20px; font-weight: 800; margin: 0 0 12px; }
+ol, ul { margin: 0; padding-left: 22px; }
+li { margin: 6px 0; }
+.note { background: var(--note); border-radius: 16px; padding: 14px 16px; font-size: 15px; }
+.muted { color: var(--muted); font-size: 14px; }
+code {
+  font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all;
+  background: var(--tint); border-radius: 6px; padding: 2px 4px;
+}
+footer { text-align: center; color: var(--muted); font-size: 13px; padding: 0 16px 32px; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="switch" role="group" aria-label="Language">
+    <button type="button" data-set="ru" aria-pressed="true">RU</button>
+    <button type="button" data-set="en" aria-pressed="false">EN</button>
+  </div>
+
+  <!-- The app icon (B · Phrase), written like the app's loading screen:
+       three lines from the left, then the highlight swept over the verb. -->
+  <svg class="logo" viewBox="0 0 120 120" role="img" aria-label="En frases">
+    <rect width="120" height="120" rx="27" fill="#1B3AA8"/>
+    <rect x="24" y="30" height="14" rx="7" width="0" data-w="58" fill="#FFFFFF" opacity="0.55">
+      <animate attributeName="width" values="14;58" dur="0.46s" begin="0.15s" fill="freeze"
+               calcMode="spline" keySplines="0.33 1 0.68 1" keyTimes="0;1"/>
+    </rect>
+    <rect x="24" y="53" height="14" rx="7" width="0" data-w="20" fill="#FFFFFF" opacity="0.55">
+      <animate attributeName="width" values="14;20" dur="0.37s" begin="0.33s" fill="freeze"
+               calcMode="spline" keySplines="0.33 1 0.68 1" keyTimes="0;1"/>
+    </rect>
+    <rect x="24" y="76" height="14" rx="7" width="0" data-w="40" fill="#FFFFFF" opacity="0.55">
+      <animate attributeName="width" values="14;40" dur="0.42s" begin="0.5s" fill="freeze"
+               calcMode="spline" keySplines="0.33 1 0.68 1" keyTimes="0;1"/>
+    </rect>
+    <rect x="50" y="50" height="20" rx="10" width="0" data-w="46" fill="#FBE3A6">
+      <animate attributeName="width" values="20;49;46" keyTimes="0;0.75;1" dur="0.5s" begin="0.65s"
+               fill="freeze"/>
+    </rect>
+  </svg>
+  <h1>En frases</h1>
+  <p class="tag" lang="ru">Испанские глаголы во фразах: каждая форма — в живом примере с переводом и объяснением.</p>
+  <p class="tag" lang="en">Spanish verbs in sentences: every form in a real example, with a translation and an explanation.</p>
+  <span class="badge" lang="ru">Тестовая версия 0.1.0 · Android</span>
+  <span class="badge" lang="en">Test build 0.1.0 · Android</span>
+</header>
+
+<main>
+  <section class="card download">
+    <a class="btn" href="downloads/en-frases-0.1.0-arm64.apk" download>
+      <span lang="ru">Скачать APK <small>· 24 МБ</small></span>
+      <span lang="en">Download the APK <small>· 24 MB</small></span>
+    </a>
+    <p class="alt" lang="ru">Для большинства телефонов. Старый телефон и APK не ставится?
+      <a href="downloads/en-frases-0.1.0-armv7.apk" download>Версия для 32-битных устройств</a></p>
+    <p class="alt" lang="en">For most phones. Older phone and the APK won’t install?
+      <a href="downloads/en-frases-0.1.0-armv7.apk" download>Build for 32-bit devices</a></p>
+  </section>
+
+  <section class="card">
+    <h2 lang="ru">Как установить</h2>
+    <h2 lang="en">How to install</h2>
+    <ol lang="ru">
+      <li>Нажми «Скачать APK» на телефоне с Android 8 или новее.</li>
+      <li>Открой скачанный файл. Если телефон спросит, разреши браузеру устанавливать приложения.</li>
+      <li>Если Google Play Защита предупредит о неизвестном приложении, выбери «Всё равно установить».</li>
+      <li>Новые версии ставятся поверх старой — прогресс сохраняется в аккаунте.</li>
+    </ol>
+    <ol lang="en">
+      <li>Tap “Download the APK” on a phone with Android 8 or later.</li>
+      <li>Open the downloaded file. If asked, allow your browser to install apps.</li>
+      <li>If Google Play Protect warns about an unknown app, choose “Install anyway”.</li>
+      <li>New versions install over the old one — your progress is kept in your account.</li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2 lang="ru">Что есть в тестовой версии</h2>
+    <h2 lang="en">What’s in this test build</h2>
+    <ul lang="ru">
+      <li>20 самых частых глаголов во всех 19 временах — 2&nbsp;176 фраз.</li>
+      <li>Три режима: «Слушать», «Карточки», «Пропуск»; повторение выученного.</li>
+      <li>Прогресс, напоминания и «База» со своими фразами.</li>
+      <li>Интерфейс на русском или английском.</li>
+    </ul>
+    <ul lang="en">
+      <li>The 20 most frequent verbs in all 19 tenses — 2,176 sentences.</li>
+      <li>Three modes: Listen, Flashcards, Fill in the gap; review of what you’ve learned.</li>
+      <li>Progress, reminders and the Library with your own sentences.</li>
+      <li>Interface in English or Russian.</li>
+    </ul>
+    <p class="note" lang="ru">Это тест: фразы озвучивает голос телефона, тексты условий и политики — черновики, данные могут быть сброшены. Ошибки и идеи — через кнопку «?» в приложении.</p>
+    <p class="note" lang="en">This is a test: sentences are read by the phone’s voice, the Terms and Privacy Policy are drafts, and data may be reset. Report bugs and ideas with the “?” button in the app.</p>
+  </section>
+
+  <section class="card">
+    <h2 lang="ru">Проверка файла</h2>
+    <h2 lang="en">Verify the file</h2>
+    <p class="muted" lang="ru">SHA-256 файлов и отпечаток подписи:</p>
+    <p class="muted" lang="en">SHA-256 of the files and the signing certificate:</p>
+    <p class="muted">arm64: <code>9ac5c4b33e594244c74c5220ef76f5bb0cff3703d39a26143880d15f64b1081b</code></p>
+    <p class="muted">armv7: <code>63a99ae94b0dfa9f720acde4356e8668dda93ff9ad75db4f964d14f9e875d6db</code></p>
+    <p class="muted"><span lang="ru">Подпись</span><span lang="en">Certificate</span>: <code>7ab5303fceea90aacb1aca95f8e9955fee16f3e949bfa0f852128109c880af15</code></p>
+  </section>
+</main>
+
+<footer>
+  <span lang="ru">Обновлено 12 ноября 2026 · версия 0.1.0 (1)</span>
+  <span lang="en">Updated November 12, 2026 · version 0.1.0 (1)</span>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  function set(lang) {
+    root.className = 'lang-' + lang;
+    root.lang = lang;
+    document.querySelectorAll('.switch button').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.set === lang));
+    });
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+  }
+  var saved = null;
+  try { saved = localStorage.getItem('lang'); } catch (e) {}
+  set(saved || ((navigator.language || '').toLowerCase().indexOf('ru') === 0 ? 'ru' : 'en'));
+  document.querySelectorAll('.switch button').forEach(function (b) {
+    b.addEventListener('click', function () { set(b.dataset.set); });
+  });
+  // "Reduce motion": the icon is shown at once.
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.logo animate').forEach(function (a) {
+      a.parentNode.setAttribute('width', a.parentNode.dataset.w);
+      a.remove();
+    });
+  }
+})();
+</script>
+</body>
+</html>
